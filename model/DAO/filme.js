@@ -7,7 +7,7 @@
 /**
  * Depedencias do node para Banco de Dados Relacional
  *      Sequelize -> foi uma biblioteca para acesso a banco de dados
- *      Prisma    -> É uma biblioteca atual para acesso e manipulação de dados, utilizando SQL ou ORM (mySQL, PostegreSQL, SQLServer, Oracle)
+ *      Prisma    -> É uma biblioteca atual para acesso e manipulação de dados, utilizando SQL ou ORM (mySQL, PostegreSQL, SQLServer, Oracle) - conecta no banco
  *      Knex      -> É uma biblioteca atual para acesso e manipulação de dados, utilizando SQL
  *      
  * Dependencias do node para Bancos de dados NÃO Relacional
@@ -17,6 +17,13 @@
  * Instalação do Prisma 
  * npm install prisma --save                -> Permite a conexão com o BD
  * npm install @prisma/client --save        -> Permite executar script SQL no BD
+ * npx prisma init                          -> Inicializar o prisma no projeto (.env, prisma, etc)
+ * npx prisma migrate dev                   -> Permite sincronizar o Prisa com o BD, Modelar o BD 
+ *                                              conforme as configurções do ORM.
+ *                                              CUIDADO: Esse comando faz um reset no Banco de Dados
+ * npx prisma migrate reset                 -> Realiza o reset do database
+ * npx prisma generate                      -> Realiza apenas o sincronismo com o BD
+ * 
  * 
  ************************************************************************************************
  *      $queryRawUnsafe()   -> Permite executar apenas scripts SQL que retornam 
@@ -40,7 +47,7 @@
  */
 
 //Import da biblioteca do PrismaClient
-const { PrismaClient } = require('@prisma/client')
+const { PrismaClient } = require('../../generated/prisma')
 
 //Cria um objeto do prisma client para manipular os scripts SQL
 const prisma = new PrismaClient()
