@@ -106,6 +106,31 @@ const getSelectByIdFilms = async function (id) {
 
 }
 
+const getSelectLastIdFilm = async function () {
+    try {
+        //Script SQL 
+        let sql = `select * from tbl_filme order by id desc limit 1` //mostra apenas o ultimo filme registrado na tabela de filme
+
+
+        //Executa no BD o script SQL
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        //console.log(result)
+
+        //Validação para verifcarse o retorno do banco é um ARRAY (vazio ou com dados)
+        if (Array.isArray(result)) {
+            return Number (result [0].id)
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        //console.log(error) //usar para achar o erro, se a API retornar erro 500, caso o erro for no banco de dados (se vira pra resolver kkkk)
+        return false
+    }
+    
+}
+
 //Insere um filme no banco de dados 
 const setInsertFilms = async function (filme) {
     try {
@@ -117,9 +142,9 @@ const setInsertFilms = async function (filme) {
         trailer,
         capa)
         VALUES( '${filme.nome}',
-        '${filme.sinopse}'
+        '${filme.sinopse}',
         '${filme.data_lancamento}',
-        '${filme.duracao},
+        '${filme.duracao}',
          ${filme.orcamento},
         '${filme.trailer}',
         '${filme.capa}');`
@@ -142,15 +167,59 @@ const setInsertFilms = async function (filme) {
 //Atualiza um filme existente no bando de dados filrando pelo ID
 const setUpdateFilms = async function (filme) {
 
+    try {
+
+    let sql = `update tbl_filme set
+        nome                        = '${filme.nome}',
+        sinopse                     = '${filme.sinopse}',
+        data_lancamento             = '${filme.data_lancamento}',
+        duracao                     = '${filme.duracao}',
+        orcamento                   = '${filme.orcamento}',
+        trailer                     = '${filme.trailer}',
+        capa                        = '${filme.capa}'
+        where id = ${filme.id}`
+
+
+//$executeRawUnsafe() -> Permite apenas executar scripts SQL que não tem retorno de dados ()
+        let result = await prisma.$executeRawUnsafe(sql)
+
+        if(result)
+            return true
+        else
+        return false
+
+    } catch (error) {
+        return false
+    }
+
 }
 
 //Apaga um filme existente no banco de dados filtrando pelo ID 
 const setDeleteFilms = async function (id) {
 
+    try {
+        
+        let sql = `delete from tbl_filme where id = ${id}` 
+            
+    
+    //$executeRawUnsafe() -> Permite apenas executar scripts SQL que não tem retorno de dados ()
+            let result = await prisma.$executeRawUnsafe(sql)
+    
+            if(result > 0)
+                return true
+            else
+            return false
+    
+        } catch (error) {
+            return false
+        }
 }
 
 module.exports = {
     getSelectAllFilms,
     getSelectByIdFilms,
-    setInsertFilms
+    getSelectLastIdFilm,
+    setInsertFilms,
+    setUpdateFilms,
+    setDeleteFilms
 }
