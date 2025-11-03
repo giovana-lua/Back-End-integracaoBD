@@ -106,7 +106,6 @@ app.get('/v1/locadora/genero', cors(), async function (request, response) {
 
     let genero = await controllerGenero.listarGenero()
 
-    //console.log(filme)
 
     response.status(genero.status_code)
     response.json(genero)
@@ -119,7 +118,7 @@ app.get('/v1/locadora/genero/:id', cors(), async function (request, response) {
     //Recebe o ID enviado na requisição via parametro
     let idGenero = request.params.id
 
-    //Chama a função da controller para retornar todos os filmes
+    //Chama a função da controller para retornar todos os generos
     let genero = await controllerGenero.buscarGeneroId(idGenero)
 
     //console.log(filme)
@@ -136,7 +135,7 @@ app.post('/v1/locadora/genero', cors(), bodyParserJSON, async function (request,
     //recebe o content type da requisição
     let contentType = request.headers['content-type']
     
-    //Chama a função da controller para inserir o filme, enviamos os dados do body e o content-type
+    //Chama a função da controller para inserir o genero, enviamos os dados do body e o content-type
     let genero = await controllerGenero.inserirGenero(dadosBody, contentType)
     console.log(genero)
     
@@ -145,6 +144,105 @@ app.post('/v1/locadora/genero', cors(), bodyParserJSON, async function (request,
 
     
 })
+
+//Apaga um genero
+app.delete('/v1/locadora/genero/:id', cors(), async function(request, response){
+
+    let idGenero = request.params.id 
+
+    let result = await controllerGenero.excluirGenero(idGenero)
+
+    response.status(result.status_code)
+    response.json(result)
+
+}) 
+/*************************************************  ATORES  *****************************************************/
+/*************************************************************************************************************/
+
+
+const controllerAtor = require('./controller/ator/controller_ator.js')
+
+//Retorna uma lista de atores
+app.get('/v1/locadora/ator', cors(), async function (request, response) {
+
+    let Ator = await controllerAtor.listarAtores()
+
+ 
+
+    response.status(Ator.status_code)
+    response.json(Ator)
+})
+
+
+// retorna um ator buscando pelo ID 
+app.get('/v1/locadora/ator/:id', cors(), async function (request, response) {
+
+    //Recebe o ID enviado na requisição via parametro
+    let idAtor = request.params.id
+
+    //Chama a função da controller para retornar todos os atores
+    let ator = await controllerAtor.buscarAtorId(idAtor)
+
+    
+
+    response.status(ator.status_code)
+    response.json(ator)
+})
+
+//insere um novo ator no banco de dados
+app.post('/v1/locadora/ator', cors(), bodyParserJSON, async function (request, response){
+    //recebe o objeto JSON pelo body da requisição
+    let dadosBody = request.body
+
+    //recebe o content type da requisição
+    let contentType = request.headers['content-type']
+    
+    //Chama a função da controller para inserir o ator, enviamos os dados do body e o content-type
+    let ator = await controllerAtor.inserirAtor(dadosBody, contentType)
+    
+    
+    response.status(ator.status_code)
+      response.json(ator)
+
+    
+})
+
+//Apaga um ator
+app.delete('/v1/locadora/ator/:id', cors(), async function(request, response){
+
+    let idAtor = request.params.id 
+
+    let result = await controllerAtor.excluirAtor(idAtor)
+
+    response.status(result.status_code)
+    response.json(result)
+
+}) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /****************************************************************/

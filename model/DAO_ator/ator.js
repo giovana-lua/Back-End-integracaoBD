@@ -1,6 +1,6 @@
 /****************************************************************************************
  * Objetivo: Arquivo responsável pela realização do CRUD no Banco de Dados MySQL
- * Data: 22/10/2025
+ * Data: 29/10/2025
  * Autor: Giovana
  * Versão: 1.0
  ****************************************************************************************/
@@ -12,16 +12,13 @@ const { PrismaClient } = require('../../generated/prisma')
 //Criando um objeto do prismaClient para manipular os scripts SQL
 const prisma = new PrismaClient()
 
-
-
-// lista todos os generos 
-const getSelectAllGenres = async function () {
-
+const getSelectAllActors = async function () {
+    
     try {
         //script sql
         
         
-        let sql = `select * from tbl_genero order by id_genero desc`
+        let sql = `select * from tbl_ator order by id_ator desc`
         
         //executa no banco de dados o script sql
         let result = await prisma.$queryRawUnsafe(sql)
@@ -39,14 +36,13 @@ const getSelectAllGenres = async function () {
         
         return false
     }
-
 }
 
-//Retorna um genero pelo ID 
-const getSelectByIdGenres = async function (id) {
+const getSelectByIdActors = async function (id) {
+    
     try {
         //Script SQL 
-        let sql = `select * from tbl_genero where id_genero=${id}`
+        let sql = `select * from tbl_ator where id_ator =${id}`
 
 
         //Executa no BD o script SQL
@@ -67,11 +63,11 @@ const getSelectByIdGenres = async function (id) {
     }
 }
 
-const getSelectLastIdGenres = async function () {
-    
+
+const getSelectLastIdActors = async function () {
     try {
         //Script SQL 
-        let sql = `select * from tbl_ator order by id_genero desc limit 1` //mostra apenas o ultimo filme registrado na tabela de filme
+        let sql = `select * from tbl_ator order by id_ator desc limit 1` //mostra apenas o ultimo filme registrado na tabela de filme
 
 
         //Executa no BD o script SQL
@@ -90,16 +86,22 @@ const getSelectLastIdGenres = async function () {
         //console.log(error) //usar para achar o erro, se a API retornar erro 500, caso o erro for no banco de dados (se vira pra resolver kkkk)
         return false
     }
+
 }
 
-//Insere um genero no banco de dados
-const setInsertGenres = async function (genero) {
 
+const setInsertActors = async function (ator) {
     try {
 
-        let sql = `INSERT INTO tbl_genero (nome,descricao)
-        VALUES( '${genero.nome}',
-        '${genero.descricao}');`
+        let sql = `INSERT INTO tbl_ator (foto_autor,nome,biografia, data_nascimento, data_falecimento, pais_origem)
+        VALUES( 
+        '${ator.foto_autor}',
+        '${ator.nome}',
+        '${ator.biografia}'),
+        '${ator.data_nascimento}',
+        '${ator.data_falecimento}',
+        '${ator.pais_origem}',
+        ;`
 
 
 //$executeRawUnsafe() -> Permite apenas executar scripts SQL que não tem retorno de dados ()
@@ -116,12 +118,40 @@ const setInsertGenres = async function (genero) {
 
 }
 
-//Aparaga um genero existente filtrando pelo id
-const setDeleteGenres = async function (id) {
+//Atualiza um filme existente no bando de dados filrando pelo ID
+const setUpdateActors = async function (ator) {
 
     try {
+
+    let sql = `update tbl_ator set
+    foto_ator                        = '${ator.foto_autor}',
+    nome_ator                        = '${ator.nome}',
+    biografia                        = '${ator.biografia}',
+    data_nascimento                  = '${ator.data_nascimento}',
+    data_falecimento                 = '${ator.data_falecimento}',
+    pais_origem                      = '${ator.pais_origem}',
+    
+        where id = ${ator.id}`
+
+
+//$executeRawUnsafe() -> Permite apenas executar scripts SQL que não tem retorno de dados ()
+        let result = await prisma.$executeRawUnsafe(sql)
+
+        if(result)
+            return true
+        else
+        return false
+
+    } catch (error) {
+        return false
+    }
+
+}
+
+const setDeleteActor = async function (id) {
+    try {
         
-        let sql = `delete from tbl_genero where id_genero = ${id}` 
+        let sql = `delete from tbl_ator where id_ator = ${id}` 
             
     
     //$executeRawUnsafe() -> Permite apenas executar scripts SQL que não tem retorno de dados ()
@@ -137,11 +167,13 @@ const setDeleteGenres = async function (id) {
         }
 }
 
-module.exports = {
 
-    getSelectAllGenres,
-    getSelectByIdGenres,
-    getSelectLastIdGenres,
-    setInsertGenres,
-    setDeleteGenres
+module.exports = {
+getSelectAllActors,
+getSelectByIdActors,
+getSelectLastIdActors,
+setInsertActors,
+setUpdateActors,
+setDeleteActor
+
 }

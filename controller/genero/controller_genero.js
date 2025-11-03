@@ -112,7 +112,7 @@ const inserirGenero = async function (genero, contentType) {
 
                         return MESSAGE.HEADER //201
                     } else {
-                        console.log()
+                        
                         return MESSAGE.ERROR_INTERNAL_SERVER_MODEL //500             Se não chegar o ID 
                     }
 
@@ -137,6 +137,37 @@ const inserirGenero = async function (genero, contentType) {
 }
 //Apaga um genero filtrando pelo id
 const excluirGenero = async function (id) {
+
+    let MESSAGE = JSON.parse(JSON.stringify(MESSAGE_DEFAULT))
+
+    try {
+        //Validação de campos obrigatórios
+        if (id != '' && id != null && id != undefined && !isNaN(id) && id > 0) {
+
+            //Chama a função para filtrar pelo ID
+            let result = await generoDAO.setDeleteGenres(parseInt(id))
+
+            if (result) {
+
+                MESSAGE.HEADER.status = MESSAGE.SUCESS_DELETED_ITEM.status
+                MESSAGE.HEADER.status_code = MESSAGE.SUCESS_DELETED_ITEM.status_code
+                MESSAGE.HEADER.message = MESSAGE.SUCESS_DELETED_ITEM.message
+                MESSAGE.HEADER.response.genres = result
+
+                return MESSAGE.HEADER //204
+            } else {
+                
+                return MESSAGE.ERROR_NOT_FOUND //404
+                
+            }
+        } else {
+            return MESSAGE.ERROR_INTERNAL_SERVER_MODEL //500
+        }
+
+    } catch (error) {
+        return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
+
 
 }
 
