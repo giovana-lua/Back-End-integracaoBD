@@ -18,7 +18,7 @@ const MESSAGE_DEFAULT = require('../modulo/config_messages.js')
 const listarFilmes = async function () {
 
     //Realizando uma cópia do objeto MESSAGE_DEFAULT, permitindo que as alterações desta função não interfiram em outras funções
-    let MESSAGE = JSON.parse(JSON.stringify(MESSAGE_DEFAULT))
+    let MESSAGE = JSON.parse(JSON.stringify(MESSAGE_DEFAULT)) 
 
     try {
 

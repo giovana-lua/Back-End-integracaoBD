@@ -197,15 +197,37 @@ app.post('/v1/locadora/ator', cors(), bodyParserJSON, async function (request, r
     //recebe o content type da requisição
     let contentType = request.headers['content-type']
     
+    
     //Chama a função da controller para inserir o ator, enviamos os dados do body e o content-type
     let ator = await controllerAtor.inserirAtor(dadosBody, contentType)
-    
+   
     
     response.status(ator.status_code)
       response.json(ator)
 
     
 })
+// atualiza um ator
+app.put('/v1/locadora/ator/:id', cors(), bodyParserJSON, async function (request, response){
+
+    //Recebe os dados do body
+    let dadosBody = request.body
+
+    //Recebe o id do filme encaminhado pela Url
+    let idAtor = request.params.id
+
+    //Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    //Chama a função para atualizar o filme
+    let ator = await controllerAtor.atualizarAtor(dadosBody, idAtor, contentType)
+
+    response.status(ator.status_code)
+    response.json(ator)
+})
+
+
+
 
 //Apaga um ator
 app.delete('/v1/locadora/ator/:id', cors(), async function(request, response){
@@ -219,25 +241,118 @@ app.delete('/v1/locadora/ator/:id', cors(), async function(request, response){
 
 }) 
 
+/********************************************IDIOMA********************************************************* */
+
+const controllerIdioma = require('./controller/idioma/controller_idioma.js')
+
+//Retorna uma lista de idiomas
+app.get('/v1/locadora/idioma', cors(), async function (request, response) {
+
+    let idioma = await controllerIdioma.listaridioma()
+
+
+    response.status(idioma.status_code)
+    response.json(idioma)
+})
 
 
 
+// retorna um idioma buscando pelo ID 
+app.get('/v1/locadora/idioma/:id', cors(), async function (request, response) {
+
+    //Recebe o ID enviado na requisição via parametro
+    let idIdioma = request.params.id
+
+    //Chama a função da controller para retornar todos os idiomas
+    let idioma = await controllerIdioma.buscarIdiomaId(idIdioma)
+
+    
+
+    response.status(idioma.status_code)
+    response.json(idioma)
+})
 
 
+//insere um novo idioma no banco de dados
+app.post('/v1/locadora/idioma', cors(), bodyParserJSON, async function (request, response){
+    //recebe o objeto JSON pelo body da requisição
+    let dadosBody = request.body
+
+    //recebe o content type da requisição
+    let contentType = request.headers['content-type']
+    
+    
+    //Chama a função da controller para inserir o ator, enviamos os dados do body e o content-type
+    let idioma = await controllerIdioma.inserirIdioma(dadosBody, contentType)
+   
+    
+    response.status(idioma.status_code)
+      response.json(idioma)
+
+    
+})
 
 
+//Apaga um idioma
+app.delete('/v1/locadora/idioma/:id', cors(), async function(request, response){
+
+    let idIdioma = request.params.id 
+
+    let result = await controllerIdioma.excluirIdioma(idIdioma)
+
+    response.status(result.status_code)
+    response.json(result)
+
+}) 
 
 
+/********************************************PAIS*********************************** */
+const controllerPais = require('./controller/pais/controller_pais.js')
+
+//retorna uma lista de paises 
+app.get('/v1/locadora/pais', cors(), async function (request, response) {
+
+    let pais = await controllerPais.listarPais()
 
 
+    response.status(pais.status_code)
+    response.json(pais)
+})
 
 
+// retorna um pais buscando pelo ID 
+app.get('/v1/locadora/pais/:id', cors(), async function (request, response) {
 
+    //Recebe o ID enviado na requisição via parametro
+    let idPais = request.params.id
+ 
+    //Chama a função da controller para retornar todos os paises
+    let pais = await controllerPais.buscarPaisId(idPais)
 
+    
 
+    response.status(pais.status_code)
+    response.json(pais)
+})
 
+//insere um novo idioma no banco de dados
+app.post('/v1/locadora/pais', cors(), bodyParserJSON, async function (request, response){
+    //recebe o objeto JSON pelo body da requisição
+    let dadosBody = request.body
 
+    //recebe o content type da requisição
+    let contentType = request.headers['content-type']
+    
+    
+    //Chama a função da controller para inserir o ator, enviamos os dados do body e o content-type
+    let pais = await controllerPais.inserirPais(dadosBody, contentType)
+   
+    
+    response.status(pais.status_code)
+      response.json(pais)
 
+    
+})
 
 
 
