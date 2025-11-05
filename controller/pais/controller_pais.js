@@ -80,7 +80,7 @@ const buscarPaisId = async function (id) {
 
 }
 
-// insere um novo idioma
+// insere um novo pais
 const inserirPais = async function (pais, contentType) {
 
     let MESSAGE = JSON.parse(JSON.stringify(MESSAGE_DEFAULT))
@@ -95,7 +95,7 @@ const inserirPais = async function (pais, contentType) {
             if (!validarDados) {
 
                 //chama a função do DAO para inserir um filme 
-                let result = await paisDAO.setInsertPais(pais)
+                let result = await paisDAO.setInsertCountry(pais)
 
 
                 if (result) {
@@ -130,6 +130,7 @@ const inserirPais = async function (pais, contentType) {
 
         }
     } catch (error) {
+        //console.log(error)
         
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
@@ -137,8 +138,65 @@ const inserirPais = async function (pais, contentType) {
 }
 
 
+//Apaga um pais filtrando pelo id
+const excluirPais = async function (id) {
+
+    let MESSAGE = JSON.parse(JSON.stringify(MESSAGE_DEFAULT))
+
+    try {
+        //Validação de campos obrigatórios
+        if (id != '' && id != null && id != undefined && !isNaN(id) && id > 0) {
+
+            //Chama a função para filtrar pelo ID
+            let result = await paisDAO.setDeleteCountry(parseInt(id))
+
+            if (result) {
+
+                MESSAGE.HEADER.status = MESSAGE.SUCESS_DELETED_ITEM.status
+                MESSAGE.HEADER.status_code = MESSAGE.SUCESS_DELETED_ITEM.status_code
+                MESSAGE.HEADER.message = MESSAGE.SUCESS_DELETED_ITEM.message
+                MESSAGE.HEADER.response.country = result
+
+                return MESSAGE.HEADER //204
+            } else {
+                
+                return MESSAGE.ERROR_NOT_FOUND //404
+                
+            }
+        } else {
+            return MESSAGE.ERROR_INTERNAL_SERVER_MODEL //500
+        }
+
+    } catch (error) {
+        console.log(error)
+        return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
+
+
+}
+
+const validarDadosPais = async function (pais) {
+    let MESSAGE = JSON.parse(JSON.stringify(MESSAGE_DEFAULT))
+
+    if (pais.nome_pais == '' || pais.nome_pais == null || pais.nome_pais == undefined || pais.nome_pais.length > 100) {
+        MESSAGE.ERROR_REQUIRED_FIELDS.invalid_field = 'Atributo [NOME] inválido!'
+        return MESSAGE.ERROR_REQUIRED_FIELDS
+        //erro
+    } else if
+        (pais.sigla == '' || pais.sigla == null || pais.sigla == undefined || pais.sigla.length > 100) {
+            MESSAGE.ERROR_REQUIRED_FIELDS.invalid_field = 'Atributo [SIGLA] inválido!'
+            return MESSAGE.ERROR_REQUIRED_FIELDS
+    } else {
+
+        return false
+    }
+}
+
+
 module.exports = {
 listarPais,
 buscarPaisId,
-inserirPais
+inserirPais,
+excluirPais,
+validarDadosPais
 }

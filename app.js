@@ -335,7 +335,7 @@ app.get('/v1/locadora/pais/:id', cors(), async function (request, response) {
     response.json(pais)
 })
 
-//insere um novo idioma no banco de dados
+//insere um novo pais no banco de dados
 app.post('/v1/locadora/pais', cors(), bodyParserJSON, async function (request, response){
     //recebe o objeto JSON pelo body da requisição
     let dadosBody = request.body
@@ -354,6 +354,17 @@ app.post('/v1/locadora/pais', cors(), bodyParserJSON, async function (request, r
     
 })
 
+//Apaga um idioma
+app.delete('/v1/locadora/pais/:id', cors(), async function(request, response){
+
+    let idPais = request.params.id 
+
+    let result = await controllerPais.excluirPais(idPais)
+
+    response.status(result.status_code)
+    response.json(result)
+
+})
 
 
 
