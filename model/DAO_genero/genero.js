@@ -71,7 +71,7 @@ const getSelectLastIdGenres = async function () {
     
     try {
         //Script SQL 
-        let sql = `select * from tbl_ator order by id_genero desc limit 1` //mostra apenas o ultimo filme registrado na tabela de filme
+        let sql = `select * from tbl_genero order by id_genero desc limit 1` //mostra apenas o ultimo filme registrado na tabela de filme
 
 
         //Executa no BD o script SQL
@@ -81,13 +81,13 @@ const getSelectLastIdGenres = async function () {
 
         //Validação para verifcarse o retorno do banco é um ARRAY (vazio ou com dados)
         if (Array.isArray(result)) {
-            return Number (result [0].id)
+            return Number (result [0].id_genero)
         } else {
             return false
         }
 
     } catch (error) {
-        //console.log(error) //usar para achar o erro, se a API retornar erro 500, caso o erro for no banco de dados (se vira pra resolver kkkk)
+        console.log(error) //usar para achar o erro, se a API retornar erro 500, caso o erro for no banco de dados (se vira pra resolver kkkk)
         return false
     }
 }
@@ -111,10 +111,38 @@ const setInsertGenres = async function (genero) {
         return false
 
     } catch (error) {
+        console.log(error)
         return false
     }
 
 }
+
+//Atualiza um filme existente no bando de dados filrando pelo ID
+const setUpdateGenres = async function (genero) {
+
+    try {
+
+    let sql = `update tbl_genero set
+        nome                      = '${genero.nome}',
+        descricao                    = '${genero.descricao}',
+
+        where id = ${genero.id}`
+
+
+//$executeRawUnsafe() -> Permite apenas executar scripts SQL que não tem retorno de dados ()
+        let result = await prisma.$executeRawUnsafe(sql)
+
+        if(result)
+            return true
+        else
+        return false
+
+    } catch (error) {
+        return false
+    }
+
+}
+
 
 //Aparaga um genero existente filtrando pelo id
 const setDeleteGenres = async function (id) {
@@ -142,6 +170,7 @@ module.exports = {
     getSelectAllGenres,
     getSelectByIdGenres,
     getSelectLastIdGenres,
+    setUpdateGenres,
     setInsertGenres,
     setDeleteGenres
 }

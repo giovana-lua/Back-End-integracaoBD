@@ -145,6 +145,27 @@ app.post('/v1/locadora/genero', cors(), bodyParserJSON, async function (request,
     
 })
 
+// atualiza um genero
+app.put('/v1/locadora/genero/:id', cors(), bodyParserJSON, async function (request, response){
+
+    //Recebe os dados do body
+    let dadosBody = request.body
+
+    //Recebe o id do genero encaminhado pela Url
+    let idGenero = request.params.id
+
+    //Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    //Chama a função para atualizar o genero
+    let genero = await controllerGenero.atualizarGenero(dadosBody, idGenero, contentType)
+
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
+
+
 //Apaga um genero
 app.delete('/v1/locadora/genero/:id', cors(), async function(request, response){
 

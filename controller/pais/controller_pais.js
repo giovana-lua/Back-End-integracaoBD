@@ -112,7 +112,7 @@ const inserirPais = async function (pais, contentType) {
 
                         return MESSAGE.HEADER //201
                     } else {
-                        
+                        console.log("")
                         return MESSAGE.ERROR_INTERNAL_SERVER_MODEL //500             Se não chegar o ID 
                     }
 

@@ -81,7 +81,7 @@ const getSelectLastIdCountry = async function () {
 
         //Validação para verifcarse o retorno do banco é um ARRAY (vazio ou com dados)
         if (Array.isArray(result)) {
-            return Number (result [0].id)
+            return Number (result [0].id_pais)
         } else {
             return false
         }
