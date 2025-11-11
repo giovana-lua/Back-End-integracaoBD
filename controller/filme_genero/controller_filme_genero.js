@@ -62,7 +62,7 @@ const buscarFilmeGeneroId = async function (id) {
                 if (resultFilmesGenero.length > 0) {
                     MESSAGE.HEADER.status = MESSAGE.SUCESS_REQUEST.status
                     MESSAGE.HEADER.status_code = MESSAGE.SUCESS_REQUEST.status_code
-                    MESSAGE.HEADER.response.filmsgenres = result
+                    MESSAGE.HEADER.response.filmsgenres = resultFilmesGenero
 
                     return MESSAGE.HEADER //200
                 } else {
@@ -95,10 +95,11 @@ const listarGenerosIdFilme = async function (idFilme) {
             let resultFilmesGenero = await FilmeGeneroDAO.getSelectGenresByIdFilm(parseInt(idFilme))
 
             if (resultFilmesGenero) {
+                
                 if (resultFilmesGenero.length > 0) {
                     MESSAGE.HEADER.status = MESSAGE.SUCESS_REQUEST.status
                     MESSAGE.HEADER.status_code = MESSAGE.SUCESS_REQUEST.status_code
-                    MESSAGE.HEADER.response.filmsgenres = result
+                    MESSAGE.HEADER.response.filmsgenres = resultFilmesGenero
 
                     return MESSAGE.HEADER //200
                 } else {
@@ -108,8 +109,10 @@ const listarGenerosIdFilme = async function (idFilme) {
                 return MESSAGE.ERROR_INTERNAL_SERVER_MODEL //500
             }
         } else {
+            
             MESSAGE.ERROR_REQUIRED_FIELDS.invalid_field = 'Atributo [ID_FILME] inválido!'
             return MESSAGE.ERROR_REQUIRED_FIELDS //400
+            
         }
     } catch (error) {
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER //500
@@ -179,7 +182,7 @@ const inserirFilmeGenero = async function (FilmeGenero, contentType) {
 
                     if (lastIdFilmGenres) {
                         //Adiciona no JSON de filme o ID que foi gerado pelo banco de dados 
-                        FilmeGenero.id = lastIdGenres
+                        FilmeGenero.id = lastIdFilmGenres
                         MESSAGE.HEADER.status = MESSAGE.SUCESS_CREATED_ITEM.status
                         MESSAGE.HEADER.status_code = MESSAGE.SUCESS_CREATED_ITEM.status_code  //Se chegar o ID 
                         MESSAGE.HEADER.message = MESSAGE.SUCESS_CREATED_ITEM.message

@@ -71,12 +71,12 @@ const getSelectByIdFilmGenres = async function (id) {
 const getSelectGenresByIdFilm = async function (idFilme) {
     try {
         //Script SQL 
-        let sql = `select tbl_genero.id, tbl_genero.nome 
+        let sql = `select tbl_genero.id_genero, tbl_genero.nome 
                         from tbl_filme
-                         inner join tbl_fime_genero 
+                         inner join tbl_filme_genero 
                              on tbl_filme.id = tbl_filme_genero.id_filme
                          inner join tbl_genero 
-                             on tbl_genero.id = tbl_filme_genero.id_genero  
+                             on tbl_genero.id_genero = tbl_filme_genero.id_genero  
                           where tbl_filme.id=${idFilme}`
 
 
@@ -146,7 +146,7 @@ const getSelectLastIdFilmGenres = async function () {
 
         //Validação para verifcarse o retorno do banco é um ARRAY (vazio ou com dados)
         if (Array.isArray(result)) {
-            return Number (result [0].id)
+            return Number (result [0].id_filme_genero)
         } else {
             return false
         }
@@ -162,8 +162,9 @@ const setInsertFilmGenres = async function (filmeGenero) {
 
     try {
 
-        let sql = `INSERT INTO tbl_flme_genero (id_filme,id_genero)
-        VALUES( '${filmeGenero.id_filme}',
+        let sql = `INSERT INTO tbl_filme_genero ( id_filme,id_genero)
+        VALUES(
+        '${filmeGenero.id_filme}',
         '${filmeGenero.id_genero}');`
 
 

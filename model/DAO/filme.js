@@ -140,7 +140,7 @@ const setInsertFilms = async function (filme) {
         duracao,
         orcamento,
         trailer,
-        capa)
+        capa )
         VALUES( '${filme.nome}',
         '${filme.sinopse}',
         '${filme.data_lancamento}',
