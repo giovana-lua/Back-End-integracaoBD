@@ -67,6 +67,7 @@ app.post('/v1/locadora/filme', cors(), bodyParserJSON, async function (request, 
     
 })
 
+//atualiza o filme
 app.put('/v1/locadora/filme/:id', cors(), bodyParserJSON, async function (request, response){
 
     //Recebe os dados do body
@@ -84,7 +85,7 @@ app.put('/v1/locadora/filme/:id', cors(), bodyParserJSON, async function (reques
     response.status(filme.status_code)
     response.json(filme)
 })
-
+//apaga um filme
 app.delete('/v1/locadora/filme/:id', cors(), async function(request, response){
 
     let idFilme = request.params.id 
@@ -386,6 +387,189 @@ app.delete('/v1/locadora/pais/:id', cors(), async function(request, response){
     response.json(result)
 
 })
+
+/*******************************************CLASSIFICACAO**********************************************
+*********************************************************************************************************/
+
+const controllerClassificacao = require('./controller/Classificacao/controller_classificacao.js')
+
+//Retorna uma lista de classsificações
+app.get('/v1/locadora/classificacao', cors(), async function (request, response) {
+
+    let classificacao = await controllerClassificacao.listarClassificacao()
+
+
+    response.status(classificacao.status_code)
+    response.json(classificacao)
+})
+
+
+// retorna uma classificação buscando pelo ID 
+app.get('/v1/locadora/classificacao/:id', cors(), async function (request, response) {
+
+    //Recebe o ID enviado na requisição via parametro
+    let idClassificacao = request.params.id
+
+    //Chama a função da controller para retornar todos os generos
+    let classificacao = await controllerClassificacao.buscarClassificacaoId(idClassificacao)
+
+    //console.log()
+
+    response.status(classificacao.status_code)
+    response.json(classificacao)
+})
+
+//insere uma nova classificação no banco de dados
+app.post('/v1/locadora/classificacao', cors(), bodyParserJSON, async function (request, response){
+    //recebe o objeto JSON pelo body da requisição
+    let dadosBody = request.body
+
+    //recebe o content type da requisição
+    let contentType = request.headers['content-type']
+    
+    //Chama a função da controller para inserir a classificação, enviamos os dados do body e o content-type
+    let classificacao = await controllerClassificacao.inserirClassificacao(dadosBody, contentType)
+    console.log(classificacao)
+    
+    response.status(classificacao.status_code)
+    response.json(classificacao)
+
+    
+})
+
+// atualiza uma classificação
+app.put('/v1/locadora/classificacao/:id', cors(), bodyParserJSON, async function (request, response){
+
+    //Recebe os dados do body
+    let dadosBody = request.body
+
+    //Recebe o id da classificação encaminhado pela Url
+    let idClassificacao = request.params.id
+
+    //Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    //Chama a função para atualizar a classificação
+    let classificacao = await controllerClassificacao.atualizarClassificacao(dadosBody, idClassificacao, contentType)
+
+    response.status(classificacao.status_code)
+    response.json(classificacao)
+})
+
+
+
+//Apaga uma classificação
+app.delete('/v1/locadora/classificacao/:id', cors(), async function(request, response){
+
+    let idClassificacao = request.params.id 
+
+    let result = await controllerClassificacao.excluirClassificacao(idClassificacao)
+
+    response.status(result.status_code)
+    response.json(result)
+
+}) 
+
+
+/***************************************************DIRETOR*************************************************
+ ***********************************************************************************************************/
+
+const controllerDiretor = require('./controller/diretor/controller_diretor.js')
+
+//Retorna uma lista de diretores
+app.get('/v1/locadora/diretor', cors(), async function (request, response) {
+
+    let Diretor = await controllerDiretor.listarDiretores()
+
+ 
+
+    response.status(Diretor.status_code)
+    response.json(Diretor)
+})
+
+
+// retorna um diretor buscando pelo ID 
+app.get('/v1/locadora/diretor/:id', cors(), async function (request, response) {
+
+    //Recebe o ID enviado na requisição via parametro
+    let idDiretor = request.params.id
+
+    //Chama a função da controller para retornar todos os atores
+    let diretor = await controllerDiretor.buscarDiretoresId(idDiretor)
+
+    
+
+    response.status(diretor.status_code)
+    response.json(diretor)
+})
+
+//insere um novo diretor no banco de dados
+app.post('/v1/locadora/diretor', cors(), bodyParserJSON, async function (request, response){
+    //recebe o objeto JSON pelo body da requisição
+    let dadosBody = request.body
+
+    //recebe o content type da requisição
+    let contentType = request.headers['content-type']
+    
+    
+    //Chama a função da controller para inserir o ator, enviamos os dados do body e o content-type
+    let diretor = await controllerDiretor.inserirDiretores(dadosBody, contentType)
+   
+    
+    response.status(diretor.status_code)
+      response.json(diretor)
+
+    
+})
+// atualiza um diretor
+app.put('/v1/locadora/diretor/:id', cors(), bodyParserJSON, async function (request, response){
+
+    //Recebe os dados do body
+    let dadosBody = request.body
+
+    //Recebe o id do diretor encaminhado pela Url
+    let idDiretor = request.params.id
+
+    //Recebe o content-type da requisição
+    let contentType = request.headers['content-type']
+
+    //Chama a função para atualizar o diretor
+    let diretor = await controllerDiretor.atualizarDiretor(dadosBody, idDiretor, contentType)
+
+    response.status(diretor.status_code)
+      response.json(diretor)
+})
+
+
+
+
+//Apaga um diretor
+app.delete('/v1/locadora/diretor/:id', cors(), async function(request, response){
+
+    let idDiretor = request.params.id 
+
+    let result = await controllerDiretor.excluirDiretor(idDiretor)
+
+    response.status(result.status_code)
+    response.json(result)
+
+}) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

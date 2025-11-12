@@ -12,8 +12,6 @@ const filmeDAO = require('../../model/DAO/filme.js')
 //Import da controller filme genero
 const ControllerFilmeGenero = require('../filme_genero/controller_filme_genero.js')
 
-const ControllerGenero = require ('../genero/controller_genero.js')
-
 //Import do arquivo que padroniza todas as mensagens
 const MESSAGE_DEFAULT = require('../modulo/config_messages.js')
 
